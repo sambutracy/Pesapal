@@ -7,15 +7,16 @@ This Version Control System (VCS) is a custom implementation designed to manage 
 ## Project Structure
 
 The VCS is structured around a repository that contains several key directories and files:
-
+```
 .vcs/
 ├── branches/ # Stores the different branches and commits for each branch.
 │   ├── main/ # Main branch containing commit history.
 │   └── <branch_name>/ # Other branches with their respective commits.
 ├── commits/ # Stores commit information (currently not in use).
 ├── ignore/ # Stores ignored file patterns.
-- **`HEAD`**: Stores the name of the current active branch.
+├── HEAD/ #Stores the name of the current active branch.
 └── staging/ # Temporary storage for files to be committed.
+```
 
 ### Key Components:
 - `branches/`: Contains subdirectories for each branch (e.g., `main`, `feature_branch`), where each subdirectory holds commits for that branch.
@@ -102,9 +103,6 @@ The `clone` command creates a copy of an existing repository in a new location. 
 - The system copies all files and directories from the source repository to the new destination.
 - It replicates the `.vcs` structure, ensuring the new repository functions independently.
 
-Here’s an updated version of the workflow with the first step to run the `vcs.py` script in interactive mode using `python -i vcs.py`:
-
-```markdown
 ## VCS Workflow
 
 This is a simple command-line version control system (VCS) that allows you to manage your files, create branches, and make commits in a repository. Below is the workflow to help you get started with using the VCS.
@@ -229,10 +227,6 @@ vcs> clone <destination>
 | `ignore <pattern>`| Add a file pattern to the ignore list                |
 | `clone <destination>`| Clone the repository to a new directory           |
 
-With this workflow, you can effectively manage your project files, keep track of changes, and work with multiple branches in your version control system.
-```
-
-This ensures that users know how to first start the Python script in interactive mode, and then proceed with the rest of the workflow to manage the repository.
 
 ## Design Decisions
 
