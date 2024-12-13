@@ -102,168 +102,137 @@ The `clone` command creates a copy of an existing repository in a new location. 
 - The system copies all files and directories from the source repository to the new destination.
 - It replicates the `.vcs` structure, ensuring the new repository functions independently.
 
-## Workflow
+Here’s an updated version of the workflow with the first step to run the `vcs.py` script in interactive mode using `python -i vcs.py`:
 
-The following is the general workflow for using the Version Control System (VCS). This section describes the typical steps a user will take to interact with the system, from initializing a repository to managing files, branches, and commits.
+```markdown
+## VCS Workflow
 
-### 1. Initialize the Repository
+This is a simple command-line version control system (VCS) that allows you to manage your files, create branches, and make commits in a repository. Below is the workflow to help you get started with using the VCS.
 
-Before starting to track files, you must initialize a new repository.
+### 1. Run the VCS Script
 
-```bash
-$ vcs init
-```
-
-#### Internal Workflow:
-- A `.vcs` directory is created to store the version control data (including branches, commits, and staging areas).
-- A default `main` branch is created.
-- A `HEAD` file is created to track the current branch.
-
-### 2. Add Files to Staging Area
-
-To begin tracking a file, use the `add` command to move files to the staging area.
+Before you can use the VCS commands, you need to start the Python script in interactive mode. You can do this by running the following command:
 
 ```bash
-$ vcs add <file_name>
+python -i vcs.py
 ```
 
-#### Internal Workflow:
-- The system checks if the file exists and if it’s not listed in the `.vcs/ignore` file.
-- The file is copied from the working directory into the `.vcs/staging/` directory.
+This will start an interactive Python session with the VCS commands available. You can now execute the available commands in the VCS.
 
-### 3. Commit Changes
+### 2. Initialize the Repository
 
-Once the files are staged, commit them to record the changes.
+To create a new repository, use the `init` command. This will initialize a `.vcs` directory that contains all the necessary files for version control.
 
 ```bash
-$ vcs commit -m "Commit message"
+vcs> init
 ```
 
-#### Internal Workflow:
-- The system verifies that there are staged files in the `staging/` directory.
-- A new commit directory is created within the current branch’s directory.
-- The commit message is saved in the commit directory.
-- The files in the staging area are copied to the commit directory.
+This will create the following structure in your project:
+- `.vcs/commits/` – stores commits
+- `.vcs/branches/` – stores branches
+- `.vcs/ignore` – lists patterns of files to ignore
+- `.vcs/HEAD` – stores the current branch (default is `main`)
 
-### 4. View Commit History
+### 3. Add Files to Staging
 
-To view the commit history of the current branch, use the `log` command.
+Once the repository is initialized, you can add files to the staging area. The `add` command copies the file into the staging area so that it can be committed later.
 
 ```bash
-$ vcs log
+vcs> add <file>
 ```
 
-#### Internal Workflow:
-- The system reads the commit directories from the current branch’s directory.
-- It displays each commit ID along with the associated commit message.
+You can check if the file has been successfully added by inspecting the `staging/` directory.
 
-### 5. Switching Branches
+### 4. Commit Changes
 
-You can create and switch between branches with the `branch` and `checkout` commands.
+After staging the files, you can commit the changes. Use the `commit` command to create a new commit with a descriptive message. This command will save all staged files into the current branch's commit history.
 
 ```bash
-$ vcs branch <new_branch_name>     # Create a new branch
-$ vcs checkout <branch_name>       # Switch to a branch
+vcs> commit "<msg>"
 ```
-The `merge` command merges changes from another branch into the current branch.
-#### Internal Workflow:
-- The system creates a new directory for the new branch inside the `branches/` directory.
-- The `HEAD` file is updated to reflect the new branch.
-- When switching branches, the files from the newly checked-out branch are loaded, replacing the files in the working directory.
 
-### 6. Merging Branches
+Each commit is stored with a unique ID, and you can view the commit history using the `log` command.
 
-To merge changes from another branch into your current branch, use the `merge` command.
+### 5. View Commit History
+
+To view the commit history of the current branch, use the `log` command. This will list all commits made on the current branch, with their commit IDs and associated messages.
 
 ```bash
-$ vcs merge <branch_name>
+vcs> log
 ```
 
-#### Internal Workflow:
-- The system copies the commit history from the target branch into the current branch’s directory.
-- Any missing commits from the target branch are added to the current branch.
-- In case of conflicts, the user will be prompted to resolve them manually (currently, the system uses symlinks for simplicity).
+### 6. Compare Commits
 
-### 7. Ignore Files
-
-To prevent certain files from being tracked by the VCS, use the `ignore` command to specify file patterns.
+You can compare two commits to see what changed between them using the `diff` command. This will display a unified diff between the two commits.
 
 ```bash
-$ vcs ignore <file_pattern>
+vcs> diff <c1> <c2>
 ```
 
-#### Internal Workflow:
-- The system appends the file pattern to the `.vcs/ignore` file.
-- Files matching the pattern will be skipped during the `add` process.
+### 7. Create a New Branch
 
-### 8. Cloning a Repository
-
-To create a copy of an existing repository, use the `clone` command.
+To create a new branch, use the `branch` command followed by the name of the new branch. This will copy the current commit history to the new branch.
 
 ```bash
-$ vcs clone <repository_path> <new_repository_path>
+vcs> branch <name>
 ```
 
-#### Internal Workflow:
-- The system copies all files and directories from the source repository to the destination path.
-- It ensures the `.vcs` structure is preserved, allowing the cloned repository to function independently.
+### 8. Switch Branches
 
-### 9. Viewing Differences Between Commits
-
-To see the changes between two commits, use the `diff` command.
+To switch to a different branch, use the `checkout` command. This will update the `HEAD` file and set the current branch to the one you specify.
 
 ```bash
-$ vcs diff <commit_id1> <commit_id2>
+vcs> checkout <branch>
 ```
 
-#### Internal Workflow:
-- The system retrieves the files from both commits and compares them.
-- The differences are displayed using a unified diff format.
+### 9. Merge Branches
 
-### Example Workflow
+If you want to merge another branch into your current branch, use the `merge` command. This will bring over commits from the target branch to the current branch.
 
-Here’s an example of how you might use the VCS to track changes in a project:
+```bash
+vcs> merge <branch>
+```
 
-1. **Initialize the repository**:
-    ```bash
-    $ vcs init
-    ```
+### 10. Ignore Files
 
-2. **Create and add files**:
-    ```bash
-    $ echo "Hello, world!" > hello.txt
-    $ vcs add hello.txt
-    ```
+You can add file patterns to the ignore list, which will prevent certain files from being staged or committed. Use the `ignore` command followed by the file pattern.
 
-3. **Commit the changes**:
-    ```bash
-    $ vcs commit -m "Add hello.txt file"
-    ```
+```bash
+vcs> ignore <file_pattern>
+```
 
-4. **Create a new branch and switch to it**:
-    ```bash
-    $ vcs branch feature-branch
-    $ vcs checkout feature-branch
-    ```
+Example:
+```bash
+vcs> ignore "*.log"
+```
 
-5. **Modify a file and add it**:
-    ```bash
-    $ echo "New feature added!" > feature.txt
-    $ vcs add feature.txt
-    ```
+### 11. Clone the Repository
 
-6. **Commit the changes**:
-    ```bash
-    $ vcs commit -m "Add feature.txt file"
-    ```
+If you want to clone the repository to a different location, use the `clone` command. This will copy the entire repository to a new directory.
 
-7. **Switch back to the main branch and merge the changes**:
-    ```bash
-    $ vcs checkout main
-    $ vcs merge feature-branch
-    ```
+```bash
+vcs> clone <destination>
+```
 
-This simple workflow demonstrates how to track changes, create branches, and merge them in a VCS system.
+### Summary of Commands
+
+| Command       | Description                                             |
+|---------------|---------------------------------------------------------|
+| `init`        | Initialize a new repository                            |
+| `add <file>`  | Stage a file for commit                                |
+| `commit <msg>`| Commit staged changes                                  |
+| `log`         | View commit history                                    |
+| `diff <c1> <c2>`| View the differences between two commits              |
+| `branch <name>`| Create a new branch                                   |
+| `checkout <branch>`| Switch to another branch                           |
+| `merge <branch>`| Merge a branch into the current branch                |
+| `ignore <pattern>`| Add a file pattern to the ignore list                |
+| `clone <destination>`| Clone the repository to a new directory           |
+
+With this workflow, you can effectively manage your project files, keep track of changes, and work with multiple branches in your version control system.
+```
+
+This ensures that users know how to first start the Python script in interactive mode, and then proceed with the rest of the workflow to manage the repository.
 
 ## Design Decisions
 
