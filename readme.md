@@ -1,263 +1,186 @@
-# Version Control System (VCS)
+# Distributed Version Control System (VCS)
 
-## Introduction
+## Overview
 
-This Version Control System (VCS) is a custom implementation designed to manage and track file changes within a repository. It includes key functionalities such as file staging, commit tracking, branch management, and merging, similar to traditional VCS tools like Git. The system is implemented in Python. It offers a command-line interface for users to interact with the repository.
+This repository contains a simple Distributed Version Control System (VCS) implemented in Python. The system allows for the initialization of repositories, staging files, committing changes, viewing commit history, creating branches, merging branches, performing diffs, and ignoring files. It is modeled after Git but is simplified for educational purposes.
 
-## Project Structure
+While conflict resolution and rebasing are not implemented, this solution provides the essential functionalities to manage code versions in a distributed way.
 
-The VCS is structured around a repository that contains several key directories and files:
+## Features
 
-.vcs/
-├── branches/ # Stores the different branches and commits for each branch.
-│   ├── main/ # Main branch containing commit history.
-│   └── <branch_name>/ # Other branches with their respective commits.
-├── commits/ # Stores commit information (currently not in use).
-├── ignore/ # Stores ignored file patterns.
-- **`HEAD`**: Stores the name of the current active branch.
-└── staging/ # Temporary storage for files to be committed.
+- **Initialize Repository**: Create a new version control repository in the current directory.
+- **Stage Files**: Add files to the staging area to prepare them for committing.
+- **Commit Changes**: Save staged changes to the repository with a commit message.
+- **View Commit History**: Display the list of commits made to the repository.
+- **Create Branches**: Create branches from the main codebase.
+- **Merge Branches**: Merge changes from one branch into another.
+- **Diffs**: Show differences between commits or branches.
+- **Ignore Files**: Specify files that should not be tracked by the VCS.
+- **Clone Repository**: Clone a repository from a local directory (disk-based, not over a network).
 
-### Key Components:
-- `branches/`: Contains subdirectories for each branch (e.g., `main`, `feature_branch`), where each subdirectory holds commits for that branch.
-- `commits/`: A directory that can store detailed information about commits (optional).
-- `ignore/`: Stores file patterns to ignore during staging, such as temporary or build files.
-- `HEAD`: A file indicating the current branch.
-- `staging/`: A temporary directory where files are placed before they are committed.
+## Requirements
 
-## VCS Functionalities
+- Python 3.7+
+- Basic understanding of version control systems like Git.
 
-### 1. Initialization (`init`)
+## Setup Instructions
 
-The `init` command initializes a new repository by creating the `.vcs` directory, which contains all the necessary subdirectories and files for version control, including initializing the `ignore` file. If the repository is already initialized, an appropriate message is displayed.
+### Cloning the Repository
 
-#### Process:
-- Creates the `.vcs` directory.
-- Creates `branches/`, `commits/`, and `staging/` directories.
-- Initializes a file named `HEAD`, which stores the current active branch (defaults to `main`).
-- Initializes an empty `ignore` file to store ignored file patterns.
+To get started, clone the repository to your local machine:
 
-### 2. Adding Files (`add`)
+```bash
+git clone https://github.com/yourusername/vcs.git
+cd vcs
+```
 
-The `add` command stages files for the next commit. This involves copying the files from the working directory to the staging area.
+### Running the VCS
 
-#### Process:
-- The system checks if the file exists.
-- It checks the `ignore` file to ensure the file is not excluded from version control.
-- If not ignored, the file is copied to the `staging/` directory, ready for commit.
-
-### 3. Committing Changes (`commit`)
-
-The `commit` command creates a new commit with all staged files, storing them in the current branch's history. A commit message is required and provided as an argument, which is saved alongside the files.
-
-#### Process:
-- The system checks if there are staged files in the `staging/` directory.
-- If no files are staged, it returns an error.
-- The commit files are copied from the staging area to a new commit directory within the current branch’s directory.
-- A commit message is saved in the newly created commit directory.
-
-### 4. Viewing Commit History (`log`)
-
-The `log` command displays the commit history of the current branch, showing each commit’s ID and message.
-
-#### Process:
-- Reads the commit history from the current branch's directory.
-- Displays commit IDs and associated messages.
-
-### 5. Showing Differences Between Commits (`diff`)
-
-The `diff` command shows the changes between two commits and displays the differences between them. It uses the unified diff format to show any changes in the files between the two commits.
-
-#### Process:
-- Retrieves the files from both commits.
-- Compares the file content using the `unified_diff` method from Python's `difflib` library.
-- Displays the differences for each file that has changed.
-
-### 6. Branch Management
-
-#### Creating a Branch (`branch`)
-
-The `branch` command creates a new branch by copying the commit history from the current branch. If the branch already exists, an error is raised.
-
-#### Switching Branches (`checkout`)
-
-The `checkout` command switches to a different branch. It updates the `HEAD` file to indicate the new current branch.
-
-#### Merging Branches (`merge`)
-
-The `merge` command merges changes from another branch into the current branch. It copies any missing commits from the target branch to the current branch’s history.
-
-### 7. Ignoring Files (`ignore`)
-
-The `ignore` command allows users to specify file patterns that should be excluded from tracking by the VCS. This command prevents certain files from being tracked by the VCS, and these files are ignored during the staging process.
-
-#### Process:
-- The file pattern is appended to the `ignore` file.
-- Any file matching the pattern is skipped during the `add` operation.
-
-### 8. Cloning a Repository (`clone`)
-
-The `clone` command creates a copy of an existing repository in a new location. This includes all branches, commits, and other necessary files.
-
-#### Process:
-- The system copies all files and directories from the source repository to the new destination.
-- It replicates the `.vcs` structure, ensuring the new repository functions independently.
-
-Here’s an updated version of the workflow with the first step to run the `vcs.py` script in interactive mode using `python -i vcs.py`:
-
-```markdown
-## VCS Workflow
-
-This is a simple command-line version control system (VCS) that allows you to manage your files, create branches, and make commits in a repository. Below is the workflow to help you get started with using the VCS.
-
-### 1. Run the VCS Script
-
-Before you can use the VCS commands, you need to start the Python script in interactive mode. You can do this by running the following command:
+Make sure you have Python 3.7 or higher installed. Navigate to the directory where your `vcs.py` file is located. Run the system in interactive mode by executing:
 
 ```bash
 python -i vcs.py
 ```
 
-This will start an interactive Python session with the VCS commands available. You can now execute the available commands in the VCS.
+This will launch an interactive Python session where you can begin using the VCS commands.
 
-### 2. Initialize the Repository
+## Usage Guide
 
-To create a new repository, use the `init` command. This will initialize a `.vcs` directory that contains all the necessary files for version control.
+### 1. Initializing a Repository
 
-```bash
-vcs> init
+To initialize a new repository in the current directory:
+
+```python
+vcs.init_repo()
 ```
 
-This will create the following structure in your project:
-- `.vcs/commits/` – stores commits
-- `.vcs/branches/` – stores branches
-- `.vcs/ignore` – lists patterns of files to ignore
-- `.vcs/HEAD` – stores the current branch (default is `main`)
+This will create a `.vcs` directory to store the repository’s metadata.
 
-### 3. Add Files to Staging
+### 2. Staging Files
 
-Once the repository is initialized, you can add files to the staging area. The `add` command copies the file into the staging area so that it can be committed later.
+To stage a file for committing, use the following command:
 
-```bash
-vcs> add <file>
+```python
+vcs.add("filename.txt")
 ```
 
-You can check if the file has been successfully added by inspecting the `staging/` directory.
+You can add multiple files by passing them as arguments:
 
-### 4. Commit Changes
-
-After staging the files, you can commit the changes. Use the `commit` command to create a new commit with a descriptive message. This command will save all staged files into the current branch's commit history.
-
-```bash
-vcs> commit "<msg>"
+```python
+vcs.add("file1.txt", "file2.txt")
 ```
 
-Each commit is stored with a unique ID, and you can view the commit history using the `log` command.
+### 3. Committing Changes
 
-### 5. View Commit History
+Once your files are staged, you can commit the changes with a message:
 
-To view the commit history of the current branch, use the `log` command. This will list all commits made on the current branch, with their commit IDs and associated messages.
-
-```bash
-vcs> log
+```python
+vcs.commit("Initial commit")
 ```
 
-### 6. Compare Commits
+This will create a new commit in the repository with the specified commit message.
 
-You can compare two commits to see what changed between them using the `diff` command. This will display a unified diff between the two commits.
+### 4. Viewing Commit History
 
-```bash
-vcs> diff <c1> <c2>
+To view the commit history, use:
+
+```python
+vcs.show_history()
 ```
 
-### 7. Create a New Branch
+This will display the list of all commits, including the commit hash and associated messages.
 
-To create a new branch, use the `branch` command followed by the name of the new branch. This will copy the current commit history to the new branch.
+### 5. Creating a Branch
 
-```bash
-vcs> branch <name>
+To create a new branch from the current commit:
+
+```python
+vcs.create_branch("new-branch")
 ```
 
-### 8. Switch Branches
+### 6. Merging Branches
 
-To switch to a different branch, use the `checkout` command. This will update the `HEAD` file and set the current branch to the one you specify.
+To merge a branch into the current one, use:
 
-```bash
-vcs> checkout <branch>
+```python
+vcs.merge("new-branch")
 ```
 
-### 9. Merge Branches
+If there are conflicts, they will be detected, but there will be no automatic resolution—manual intervention is required.
 
-If you want to merge another branch into your current branch, use the `merge` command. This will bring over commits from the target branch to the current branch.
+### 7. Diffing Between Commits
 
-```bash
-vcs> merge <branch>
+To view the differences between two commits, use:
+
+```python
+vcs.diff(commit_hash_1, commit_hash_2)
 ```
 
-### 10. Ignore Files
+This will show the differences between the two specified commits.
 
-You can add file patterns to the ignore list, which will prevent certain files from being staged or committed. Use the `ignore` command followed by the file pattern.
+### 8. Ignoring Files
 
-```bash
-vcs> ignore <file_pattern>
+To ignore files in the repository (i.e., prevent them from being staged or committed), use:
+
+```python
+vcs.ignore("filename.txt")
 ```
 
-Example:
-```bash
-vcs> ignore "*.log"
+These files will not be tracked by the VCS.
+
+### 9. Cloning a Repository
+
+To clone a repository from a local directory:
+
+```python
+vcs.clone("/path/to/existing/repository")
 ```
 
-### 11. Clone the Repository
+This will create a copy of the repository in the current directory.
 
-If you want to clone the repository to a different location, use the `clone` command. This will copy the entire repository to a new directory.
+## How the System Works
 
-```bash
-vcs> clone <destination>
-```
+The system stores metadata in a `.vcs` directory in each repository. The directory contains:
 
-### Summary of Commands
+- `commits/`: A folder containing commit objects with file changes and metadata.
+- `branches/`: A folder containing information about branch heads.
+- `staging/`: A folder containing files staged for the next commit.
+- `ignore/`: A file containing a list of files to ignore.
 
-| Command       | Description                                             |
-|---------------|---------------------------------------------------------|
-| `init`        | Initialize a new repository                            |
-| `add <file>`  | Stage a file for commit                                |
-| `commit <msg>`| Commit staged changes                                  |
-| `log`         | View commit history                                    |
-| `diff <c1> <c2>`| View the differences between two commits              |
-| `branch <name>`| Create a new branch                                   |
-| `checkout <branch>`| Switch to another branch                           |
-| `merge <branch>`| Merge a branch into the current branch                |
-| `ignore <pattern>`| Add a file pattern to the ignore list                |
-| `clone <destination>`| Clone the repository to a new directory           |
-
-With this workflow, you can effectively manage your project files, keep track of changes, and work with multiple branches in your version control system.
-```
-
-This ensures that users know how to first start the Python script in interactive mode, and then proceed with the rest of the workflow to manage the repository.
-
-## Design Decisions
-
-### 1. Simplicity
-The system is designed to be simple and minimalistic, with an emphasis on understanding core VCS concepts. It avoids complex features like conflict resolution, rebasing, or stashing, focusing instead on the basic functionalities of a VCS.
-
-### 2. File-Based History
-Commits are stored as separate directories with file contents copied from the staging area. This approach allows for easy tracking of changes but lacks advanced features like delta compression or object databases found in Git.
-
-### 3. Branching and Merging
-Branching is done by copying the commit history from the current branch. Merging is handled by copying commits from the target branch into the current branch’s directory. This process could be optimized with more advanced merge algorithms and conflict resolution mechanisms.
-
-### 4. Symlinks in Merging
-The merging functionality uses symlinks to link commits from other branches. This approach simplifies the merge process but could lead to issues if file changes are complex, requiring more sophisticated merge strategies.
-
-### 5. Command-Line Interface
-The VCS uses a Python `cmd` module-based shell for interaction. This interface makes it easy to extend and add new features while keeping the experience simple for users familiar with the command line.
+When you commit changes, the system generates a new commit object, stores it in the `commits/` directory, and updates the branch head. Staging adds files to the `staging/` directory. When committing, the staged files are copied to the commit object.
 
 ## Future Improvements
 
-1. **Conflict Resolution**: Implement automatic or manual conflict resolution during the `merge` process.
-2. **Efficient Storage**: Use more advanced techniques for storing file changes, such as Git-style object databases, to improve performance and reduce redundancy.
-3. **Graphical User Interface (GUI)**: Add a GUI to make the system more accessible to users who are not familiar with command-line interfaces.
-4. **Remote Repositories**: Implement support for remote repositories (e.g., GitHub, GitLab) to allow for collaboration across multiple users.
+The current implementation is a basic version control system and lacks advanced features such as:
 
-## Conclusion
+- **Conflict resolution**: When merging branches, conflicts are detected, but no automated conflict resolution exists.
+- **Rebasing**: The ability to rebase branches onto a different branch is not implemented.
+- **Network support**: Currently, the system only supports disk-based cloning, not remote repositories.
 
-This VCS implementation serves as a simple, educational version control system that provides the core functionalities necessary for file tracking, branching, and collaboration. While it is not as feature-rich as more established systems like Git, it offers an excellent learning tool for understanding version control mechanics.
+In future versions, these features can be added to enhance the functionality and mimic more advanced systems like Git.
+
+## Code Structure
+
+- `vcs.py`: The main file containing all the VCS logic, including functions for initializing repos, staging files, committing, and more.
+- `.vcs/`: A hidden directory where the version control metadata is stored.
+    - `commits/`: Stores commit objects.
+    - `branches/`: Stores branch information.
+    - `staging/`: Stores staged files.
+    - `ignore/`: Lists files to ignore.
+
+## Error Handling
+
+- **Missing Files**: If you try to commit a file that doesn’t exist, the system will raise a `FileNotFoundError`.
+- **Unstaged Files**: Attempting to commit without staging any files will raise a `NoFilesStagedError`.
+- **Merge Conflicts**: Conflicts during merges are detected, but no automated resolution exists at the moment.
+
+## Contributing
+
+If you'd like to contribute to the project:
+
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature-branch`).
+3. Make your changes.
+4. Commit your changes (`git commit -am 'Add new feature'`).
+5. Push to the branch (`git push origin feature-branch`).
+6. Submit a pull request.
