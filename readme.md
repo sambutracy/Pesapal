@@ -2,9 +2,14 @@
 
 ## Overview
 
-This repository contains a simple Distributed Version Control System (VCS) implemented in Python. The system allows for the initialization of repositories, staging files, committing changes, viewing commit history, creating branches, merging branches, performing diffs, and ignoring files. It is modeled after Git but is simplified for educational purposes.
+This repository contains a simple Distributed Version Control System (VCS) implemented in Python. It mimics the basic functionalities of Git, allowing users to initialize repositories, stage files, commit changes, view commit history, create branches, merge branches, perform diffs, and ignore files. This project is designed for educational purposes to demonstrate the core principles of version control systems in a distributed environment.
 
-While conflict resolution and rebasing are not implemented, this solution provides the essential functionalities to manage code versions in a distributed way.
+Although features like conflict resolution and rebasing are not implemented, this VCS provides the essential functionality needed to manage code versions across multiple collaborators.
+
+## Problem Context
+
+Version control systems (VCS) like Git are essential tools for software development. They help developers manage changes to code, track revisions, collaborate effectively, and maintain the integrity of codebases. This project aims to demonstrate the core concepts behind distributed version control systems through a simple, easy-to-understand implementation, which serves as a great starting point for understanding the inner workings of tools like Git.
+
 
 ## Features
 
@@ -30,7 +35,7 @@ While conflict resolution and rebasing are not implemented, this solution provid
 To get started, clone the repository to your local machine:
 
 ```bash
-git clone https://github.com/yourusername/vcs.git
+git clone https://github.com/sambutracy/Pesapal.git
 cd vcs
 ```
 
@@ -51,7 +56,7 @@ This will launch an interactive Python session where you can begin using the VCS
 To initialize a new repository in the current directory:
 
 ```python
-vcs.init_repo()
+vcs.init()
 ```
 
 This will create a `.vcs` directory to store the repository’s metadata.
@@ -85,7 +90,7 @@ This will create a new commit in the repository with the specified commit messag
 To view the commit history, use:
 
 ```python
-vcs.show_history()
+vcs.log()
 ```
 
 This will display the list of all commits, including the commit hash and associated messages.
@@ -95,7 +100,7 @@ This will display the list of all commits, including the commit hash and associa
 To create a new branch from the current commit:
 
 ```python
-vcs.create_branch("new-branch")
+vcs.branch("new-branch")
 ```
 
 ### 6. Merging Branches
@@ -149,15 +154,6 @@ The system stores metadata in a `.vcs` directory in each repository. The directo
 
 When you commit changes, the system generates a new commit object, stores it in the `commits/` directory, and updates the branch head. Staging adds files to the `staging/` directory. When committing, the staged files are copied to the commit object.
 
-## Future Improvements
-
-The current implementation is a basic version control system and lacks advanced features such as:
-
-- **Conflict resolution**: When merging branches, conflicts are detected, but no automated conflict resolution exists.
-- **Rebasing**: The ability to rebase branches onto a different branch is not implemented.
-- **Network support**: Currently, the system only supports disk-based cloning, not remote repositories.
-
-In future versions, these features can be added to enhance the functionality and mimic more advanced systems like Git.
 
 ## Code Structure
 
@@ -168,11 +164,37 @@ In future versions, these features can be added to enhance the functionality and
     - `staging/`: Stores staged files.
     - `ignore/`: Lists files to ignore.
 
-## Error Handling
+## Design Decisions
 
-- **Missing Files**: If you try to commit a file that doesn’t exist, the system will raise a `FileNotFoundError`.
-- **Unstaged Files**: Attempting to commit without staging any files will raise a `NoFilesStagedError`.
-- **Merge Conflicts**: Conflicts during merges are detected, but no automated resolution exists at the moment.
+- Simplification: This implementation focuses on the core functionalities (staging, committing, branching, and merging) while omitting more advanced Git features like rebase and conflict resolution. The aim is to provide an educational, easy-to-understand version control system.
+- Disk-based Cloning: The system supports cloning repositories from local directories but does not yet include network-based cloning or remote repository management.
+
+
+## Testing Strategy
+This implementation includes basic unit tests for core functionalities such as commit handling, branch creation, and file staging. These tests ensure that key actions work as expected.
+
+Future versions will include more comprehensive tests, especially for scenarios involving merges and diffing between branches.
+
+## Performance Considerations
+Currently, the system is optimized for simplicity rather than performance. As the project grows, we plan to introduce optimizations such as incremental diffs and better file management to improve efficiency when working with large repositories.
+
+## Security Considerations
+At this stage, security features such as commit data encryption or secure branch handling have not been implemented. Future versions could address these concerns to improve data integrity and prevent unauthorized access to repository metadata.
+
+## Scalability
+As this VCS handles repositories of increasing size, future enhancements will focus on storage efficiency and performance. Features like delta encoding for commit objects and optimized memory handling for large repositories are potential areas for improvement.
+
+
+## Future Improvements
+
+The current implementation is a basic version control system and lacks advanced features such as:
+
+- **Conflict resolution**: When merging branches, conflicts are detected, but no automated conflict resolution exists.
+- **Rebasing**: The ability to rebase branches onto a different branch is not implemented.
+- **Network support**: Currently, the system only supports disk-based cloning, not remote repositories.
+
+In future versions, these features can be added to enhance the functionality and mimic more advanced systems like Git.
+
 
 ## Contributing
 
